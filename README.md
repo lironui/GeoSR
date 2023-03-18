@@ -211,10 +211,6 @@ python GeoSR/super_resolution_for_seg.py --config-path GeoSR/config/uavid_SR/lsw
 
 ![Super Resolution](https://github.com/lironui/GeoSR/blob/main/figs/figure5.PNG) 
 ![Semantic Segmentation](https://github.com/lironui/GeoSR/blob/main/figs/figure9.PNG) 
-![Demo](https://github.com/lironui/GeoSR/blob/main/figs/merge.mp4) 
-<div>
-<video src="https://github.com/lironui/GeoSR/blob/main/figs/merge.mp4" controls="controls" width="500" height="300">您的浏览器不支持播放该视频！</video>
-</div>
 
 ## Citation
 
