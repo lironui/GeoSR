@@ -209,10 +209,7 @@ python GeoSR/sr_for_seg.py --config-path GeoSR/config/uavid_SR/lswin2sr.py --pre
 python GeoSR/super_resolution_for_seg.py --config-path GeoSR/config/uavid_SR/lswin2sr.py
 ```
 
-<div>
-<img src="./figs/figure5.png" width="30%"/>
-<img src="./figs/figure9.png" width="35.5%"/>
-</div>
+![Super Resolution (×2)](https://github.com/lironui/GeoSR/blob/main/figs/figure5.PNG) 
 
 ## Citation
 
