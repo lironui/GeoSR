@@ -210,8 +210,8 @@ python GeoSR/super_resolution_for_seg.py --config-path GeoSR/config/uavid_SR/lsw
 ```
 
 <div>
-<img src="figs/figure5.png" width="30%"/>
-<img src="figs/figure9.png" width="35.5%"/>
+<img src="./figs/figure5.png" width="30%"/>
+<img src="./figs/figure9.png" width="35.5%"/>
 </div>
 
 ## Citation
