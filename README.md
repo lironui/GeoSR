@@ -217,7 +217,7 @@ python GeoSR/super_resolution_for_seg.py --config-path GeoSR/config/uavid_SR/lsw
 If you find this project useful in your research, please consider citing：
 
 - [LSwinSR: UAV Imagery Super-Resolution based on Linear Swin Transformer](https://arxiv.org/pdf/2303.10232v1.pdf)
-- [UNetFormer: A UNet-like transformer for efficient semantic segmentation of remote sensing urban scene imagery](https://authors.elsevier.com/a/1fIji3I9x1j9Fs)
+- [UNetFormer: A UNet-like transformer for efficient semantic segmentation of remote sensing urban scene imagery](https://www.sciencedirect.com/science/article/abs/pii/S0924271622001654)
 
 Other papers you might be interested in:
 
