@@ -9,7 +9,7 @@ Currently, as computer vision is not my major research topic, I don't have enoug
 
 ## Introduction
 
-**GeoSR** is an open-source super resolution and semantic segmentation toolbox based on PyTorch, [pytorch lightning](https://www.pytorchlightning.ai/) and [timm](https://github.com/rwightman/pytorch-image-models), which mainly focuses on developing advanced Vision Transformers for UAV super resolution and semantic segmentation.
+**GeoSR** is an open-source super resolution and semantic segmentation toolbox based on PyTorch, [GeoSeg](https://github.com/WangLibo1995/GeoSeg), [pytorch lightning](https://www.pytorchlightning.ai) and [timm](https://github.com/rwightman/pytorch-image-models), which mainly focuses on developing advanced Vision Transformers for UAV super resolution and semantic segmentation.
 
 ## Folder Structure
 Download [UAVid](https://uavid.nl/) and prepare the following folders to organize this repo:
@@ -216,7 +216,7 @@ python GeoSR/super_resolution_for_seg.py --config-path GeoSR/config/uavid_SR/lsw
 
 If you find this project useful in your research, please consider citing：
 
-- [LSwinSR: UAV Imagery Super-Resolution based on Linear Swin Transformer](https://arxiv.org/)
+- [LSwinSR: UAV Imagery Super-Resolution based on Linear Swin Transformer](https://arxiv.org/pdf/2303.10232v1.pdf)
 - [UNetFormer: A UNet-like transformer for efficient semantic segmentation of remote sensing urban scene imagery](https://authors.elsevier.com/a/1fIji3I9x1j9Fs)
 
 Other papers you might be interested in:
@@ -230,7 +230,8 @@ Other papers you might be interested in:
 Acknowlegement:
 ------- 
 The GeoSR is constructed highly based on the repository **[GeoSeg](https://github.com/WangLibo1995/GeoSeg)**. We wish GeoSR could serve the growing research of UAV by providing a unified benchmark and inspiring researchers to develop their own super-resolution networks. Many thanks the following projects's contributions to GeoSR.
-- [pytorch lightning](https://www.pytorchlightning.ai/)
+- [GeoSeg](https://github.com/WangLibo1995/GeoSeg)
+- [pytorch lightning](https://www.pytorchlightning.ai)
 - [timm](https://github.com/rwightman/pytorch-image-models)
 - [pytorch-toolbelt](https://github.com/BloodAxe/pytorch-toolbelt)
 - [ttach](https://github.com/qubvel/ttach)
