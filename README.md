@@ -1,5 +1,7 @@
 # GeoSR: A Benchmark for Super Resolution and Semantic Segmentation
 
+[![Demo](https://img.youtube.com/vi/OXZzRuJ7f2E/0.jpg)](https://youtu.be/OXZzRuJ7f2E)
+
 The whole code will be released after the paper is accepted. 
 
 Currently, as computer vision is not my major research topic, I don't have enough time and energy to further enhance the GeoSR repo. So, the pull requests are welcome such as the support for more classification, detection and segmentation datasets.
