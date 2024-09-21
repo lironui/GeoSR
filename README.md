@@ -2,8 +2,6 @@
 
 [![Demo](https://img.youtube.com/vi/OXZzRuJ7f2E/0.jpg)](https://youtu.be/OXZzRuJ7f2E)
 
-The whole code will be released after the paper is accepted. 
-
 Currently, as computer vision is not my major research topic, I don't have enough time and energy to further enhance the GeoSR repo. So, the pull requests are welcome such as the support for more classification, detection and segmentation datasets.
 
 [Welcome to my homepage!](https://lironui.github.io)
@@ -11,7 +9,7 @@ Currently, as computer vision is not my major research topic, I don't have enoug
 
 ## Introduction
 
-**GeoSR** is an open-source super resolution and semantic segmentation toolbox based on PyTorch, [GeoSeg](https://github.com/WangLibo1995/GeoSeg), [pytorch lightning](https://www.pytorchlightning.ai) and [timm](https://github.com/rwightman/pytorch-image-models), which mainly focuses on developing advanced Vision Transformers for UAV super resolution and semantic segmentation.
+**GeoSR** is an open-source super-resolution and semantic segmentation toolbox based on PyTorch, [GeoSeg](https://github.com/WangLibo1995/GeoSeg), [pytorch lightning](https://www.pytorchlightning.ai) and [timm](https://github.com/rwightman/pytorch-image-models), which mainly focuses on developing advanced Vision Transformers for UAV super-resolution and semantic segmentation.
 
 ## Folder Structure
 Download [UAVid](https://uavid.nl/) and prepare the following folders to organize this repo:
@@ -46,7 +44,7 @@ pip install -r GeoSR/requirements.txt
 
 Download the datasets from the official website and split them yourself.
 
-Split the training and validation sets for super resolution and semantic segmentation.
+Split the training and validation sets for super-resolution and semantic segmentation.
 ```
 python GeoSR/tools/seg_sr_split.py \
 --basic-path "data/uavid/uavid_train_val" \
@@ -56,7 +54,7 @@ python GeoSR/tools/seg_sr_split.py \
 --val-sr-path "data/uavid/val_sr" 
 ```
 
-Prepare the training and validation sets for super resolution and semantic segmentation (×2).
+Prepare the training and validation sets for super-resolution and semantic segmentation (×2).
 ```
 python GeoSR/tools/uavid_patch_split.py \
 --input-dir "data/uavid/train_sr" \
@@ -102,7 +100,7 @@ python GeoSR/tools/uavid_test_downsample.py \
 --scale 2
 ```
 
-Prepare the training and validation sets for super resolution and semantic segmentation (×4).
+Prepare the training and validation sets for super-resolution and semantic segmentation (×4).
 ```
 python GeoSR/tools/uavid_patch_split.py \
 --input-dir "data/uavid/train_sr" \
@@ -148,7 +146,7 @@ python GeoSR/tools/uavid_test_downsample.py \
 --scale 4
 ```
 
-Prepare the training and validation sets for super resolution and semantic segmentation (×8).
+Prepare the training and validation sets for super-resolution and semantic segmentation (×8).
 ```
 python GeoSR/tools/uavid_patch_split.py \
 --input-dir "data/uavid/train_sr" \
@@ -196,7 +194,7 @@ python GeoSR/tools/uavid_test_downsample.py \
 
 ## Training for Super Resolution
 
-"-c" means the path of the config, use different **config** to train different models.
+"-c" means the path of the config, using different **config** to train different models.
 
 ```
 python GeoSR/train_supervision_SR.py -c GeoSR/config/uavid_SR/lswinsr.py
@@ -204,7 +202,7 @@ python GeoSR/train_supervision_SR.py -c GeoSR/config/uavid_SR/lswinsr.py
 
 ## Inference for the training, validation and test sets for segmentation
 
-"-c" means the path of the config, use different settings of **config** to predict different scenarios.
+"-c" means the path of the config, using different settings of **config** to predict different scenarios.
 ```
 python GeoSR/sr_for_seg.py --config-path GeoSR/config/uavid_SR/lswin2sr.py --prediction_mode 1
 python GeoSR/sr_for_seg.py --config-path GeoSR/config/uavid_SR/lswin2sr.py --prediction_mode 2
@@ -218,7 +216,7 @@ python GeoSR/super_resolution_for_seg.py --config-path GeoSR/config/uavid_SR/lsw
 
 If you find this project useful in your research, please consider citing：
 
-- [LSwinSR: UAV Imagery Super-Resolution based on Linear Swin Transformer](https://arxiv.org/pdf/2303.10232v1.pdf)
+- [LSwinSR: UAV Imagery Super-Resolution based on Linear Swin Transformer](https://ieeexplore.ieee.org/document/10683775)
 - [UNetFormer: A UNet-like transformer for efficient semantic segmentation of remote sensing urban scene imagery](https://www.sciencedirect.com/science/article/abs/pii/S0924271622001654)
 
 Other papers you might be interested in:
@@ -229,9 +227,9 @@ Other papers you might be interested in:
 - [A Novel Transformer Based Semantic Segmentation Scheme for Fine-Resolution Remote Sensing Images](https://ieeexplore.ieee.org/abstract/document/9681903) 
 - [Transformer Meets Convolution: A Bilateral Awareness Network for Semantic Segmentation of Very Fine Resolution Urban Scene Images](https://www.mdpi.com/2072-4292/13/16/3065)
 
-Acknowlegement:
+Acknowledgement:
 ------- 
-The GeoSR is constructed highly based on the repository **[GeoSeg](https://github.com/WangLibo1995/GeoSeg)**. We wish GeoSR could serve the growing research of UAV by providing a unified benchmark and inspiring researchers to develop their own super-resolution networks. Many thanks the following projects's contributions to GeoSR.
+The GeoSR is constructed highly based on the repository **[GeoSeg](https://github.com/WangLibo1995/GeoSeg)** and **[SwinIR](https://github.com/JingyunLiang/SwinIR)**. We wish GeoSR could serve the growing research of UAV by providing a unified benchmark and inspiring researchers to develop their own super-resolution networks. Many thanks for the contributions of the following projects.
 - [GeoSeg](https://github.com/WangLibo1995/GeoSeg)
 - [pytorch lightning](https://www.pytorchlightning.ai)
 - [timm](https://github.com/rwightman/pytorch-image-models)
