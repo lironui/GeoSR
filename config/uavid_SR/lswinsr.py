@@ -1,43 +1,41 @@
 """
 UnetFormer for uavid datasets with supervision training
-RUI LI, 17.03.2023
+Rui Li, 17.03.2023
 """
+import os.path
+
 from torch.utils.data import DataLoader
 from geoseg.losses import *
-from geoseg.datasets.uavid_dataset import *
-from geoseg.models.UNetFormer import UNetFormer
+from geoseg.datasets.uavid_dataset_sr import *
+from geoseg.models.LSwinSR import LSwinSR
 from catalyst.contrib.nn import Lookahead
 from catalyst import utils
 from queue import Queue
 import torch
 from threading import Thread
+import torch.nn as nn
 
 # training hparam
-scale = 8
-base_path = 'LSwinSR'  # select the target path for training and testing the segmentation model, e.g. 'LSwinSR'
-image_path = os.path.join('data/UAVid_{}x'.format(scale), base_path)
-test_image_path = os.path.join(r'D:\lironui\dataset\UAVid_{}x'.format(scale), base_path, 'test')
-output_path = os.path.join(r'D:\lironui\dataset\UAVid_{}x'.format(scale), 'segmentation_result', base_path)
-
-max_epoch = 40
+max_epoch = 75
 ignore_index = 255
-train_batch_size = 8
-val_batch_size = 8
-lr = 6e-4
-weight_decay = 0.01
-backbone_lr = 6e-5
+train_batch_size = 4
+val_batch_size = 4
+lr = 1e-3
+backbone_lr = 1e-4
+weight_decay = 0.0003
 backbone_weight_decay = 0.01
 accumulate_n = 1
-num_classes = len(CLASSES)
+visualization_n = 10
+num_classes = 3
 classes = CLASSES
+scale = 8
 
-net = UNetFormer(num_classes=num_classes)
+net = LSwinSR(upscale=scale)
 weights_name = net.name
-weights_path = "model_weights/uavid/%s" % net.name + '_' + base_path + '_%sx' % str(scale)
-test_weights_name = net.name  # + '-v1'
-# test_weights_name = 'last'
+weights_path = "model_weights/uavid_" + str(scale) + "x/{}".format(weights_name)
+test_weights_name = net.name
 log_name = 'uavid/{}'.format(weights_name)
-monitor = 'val_mIoU'
+monitor = 'val_ssim'
 monitor_mode = 'max'
 save_top_k = 3
 save_last = True
@@ -46,12 +44,17 @@ gpus = [0]
 strategy = None
 pretrained_ckpt_path = None
 resume_ckpt_path = None
-# resume_ckpt_path = weights_path + r'\last.ckpt'
-#  define the network
-# define the loss
-loss = UnetFormerLoss(ignore_index=ignore_index)
+loss = nn.L1Loss()
 
-use_aux_loss = True
+# inference path for test set
+image_path = 'data/UAVid_{}x/test'.format(scale)
+output_path = os.path.join('data/UAVid_{}x'.format(scale), net.name, 'test')
+
+# inference path for training and validation sets of segmentation
+image_path_seg_train = 'data/UAVid_{}x/train_seg'.format(scale)
+output_path_seg_train = os.path.join('data/UAVid_{}x'.format(scale), net.name, 'train')
+image_path_seg_val = 'data/UAVid_{}x/val_seg'.format(scale)
+output_path_seg_val = os.path.join('data/UAVid_{}x'.format(scale), net.name, 'val')
 
 
 # define the dataloader
@@ -147,33 +150,35 @@ class MultiEpochsDataLoader(torch.utils.data.DataLoader):
             yield next(self.iterator)
 
 
-train_dataset = UAVIDDataset(data_root=os.path.join(image_path, 'train'), img_dir='images', mask_dir='masks',
-                             mode='train', mosaic_ratio=0.25, transform=train_aug, img_size=(128 * scale, 128 * scale))
+train_dataset = UAVIDDataset(data_root='data/UAVid_{}x/train_sr'.format(scale), img_dir='images',
+                             mask_dir='references', mode='train', mosaic_ratio=0.25, transform=train_aug,
+                             img_size=(512, 512))
 
-val_dataset = UAVIDDataset(data_root=os.path.join(image_path, 'val'), img_dir='images', mask_dir='masks', mode='val',
-                           mosaic_ratio=0.0, transform=val_aug, img_size=(128 * scale, 128 * scale))
+val_dataset = UAVIDDataset(data_root='data/UAVid_{}x/val_sr'.format(scale), img_dir='images',
+                           mask_dir='references', mode='val', mosaic_ratio=0.0, transform=val_aug, img_size=(512, 512))
 
 train_loader = MultiEpochsDataLoader(dataset=train_dataset,
                                      batch_size=train_batch_size,
-                                     num_workers=8,
+                                     num_workers=0,
                                      pin_memory=True,
                                      shuffle=True,
                                      drop_last=True)
 
 val_loader = MultiEpochsDataLoader(dataset=val_dataset,
                                    batch_size=val_batch_size,
-                                   num_workers=8,
+                                   num_workers=0,
                                    shuffle=False,
                                    pin_memory=True,
                                    drop_last=False)
 
 if gpus is not None:
-    train_loader = CudaDataLoader(train_loader, 'cuda:0')
-    val_loader = CudaDataLoader(val_loader, 'cuda:0')
+    train_loader = CudaDataLoader(train_loader, 'cuda:' + str(gpus[0]))
+    val_loader = CudaDataLoader(val_loader, 'cuda:' + str(gpus[0]))
 
 # define the optimizer
 layerwise_params = {"backbone.*": dict(lr=backbone_lr, weight_decay=backbone_weight_decay)}
 net_params = utils.process_model_params(net, layerwise_params=layerwise_params)
 base_optimizer = torch.optim.AdamW(net_params, lr=lr, weight_decay=weight_decay)
 optimizer = Lookahead(base_optimizer)
-lr_scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=max_epoch)
+# lr_scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=max_epoch)
+lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=5, gamma=0.8)
